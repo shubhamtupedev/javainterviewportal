@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Java Interview Preparation — Clean Fixed Layout</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #f7f9fb;
+    --card: #fff;
+    --text: #0f172a;
+    --muted: #6b7280;
+    --accent: #1e88e5;
+    --border: rgba(15,23,42,0.06);
+    --shadow: 0 6px 20px rgba(15,23,42,0.06);
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; }
+
+  /* Fixed header */
+  .header {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px;
+    box-shadow: var(--shadow);
+  }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo {
+    display: grid; place-items: center;
+    width: 40px; height: 40px; border-radius: 10px;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    color: white; font-weight: 800; font-size: 20px;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.2);
+  }
+  .title { font-weight: 700; font-size: 16px; }
+  .subtitle { font-size: 13px; color: var(--muted); }
+
+  /* Layout */
+  .layout {
+    display: flex; height: 100vh;
+    margin-top: 64px;
+  }
+
+  /* Fixed sidebar */
+  .sidebar {
+    position: fixed;
+    top: 64px; left: 0; bottom: 0;
+    width: 260px;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow-y: auto;
+    padding: 16px 12px;
+  }
+
+  .sidebar h4 {
+    margin-bottom: 10px; font-size: 14px; font-weight: 700;
+  }
+  .toc {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .toc a {
+    display: block; padding: 10px 12px; border-radius: 8px;
+    color: var(--text); text-decoration: none; font-size: 14px;
+    transition: background 0.2s;
+  }
+  .toc a:hover { background: rgba(30,136,229,0.08); }
+  .toc a.active {
+    background: linear-gradient(90deg, #e3f2fd, #f0faff);
+    border-left: 3px solid var(--accent);
+    font-weight: 700;
+  }
+
+  /* Content area */
+  .content-area {
+    flex: 1;
+    margin-left: 260px;
+    overflow-y: auto;
+    padding: 24px 40px;
+    scroll-behavior: smooth;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .section-meta {
+    font-size: 13px; color: var(--muted); margin-bottom: 10px;
+  }
+  pre {
+    background: #fcfdff;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+  }
+
+  /* Floating top button */
+  #backTop {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(30,136,229,0.3);
+    cursor: pointer;
+    display: none;
+    z-index: 99;
+  }
+
+  @media(max-width: 900px) {
+    .sidebar { position: relative; width: 100%; height: auto; top: 0; border-right: none; box-shadow: none; }
+    .content-area { margin-left: 0; padding: 16px; }
+    .layout { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Fixed Header -->
+  <header class="header">
+    <div class="brand">
+      <div class="logo">J</div>
+      <div>
+        <div class="title">Java Interview Preparation</div>
+        <div class="subtitle">Complete Topics & Questions</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+
+    <!-- Fixed Sidebar -->
+    <aside class="sidebar">
+      <h4>Contents</h4>
+      <nav class="toc" id="toc">
+        <a href="#Java_Topics" data-section="Java_Topics" class="active">Java Topics</a>
+        <a href="#Array_Programming_Questions" data-section="Array_Programming_Questions">Array Programming</a>
+        <a href="#Basic_Programming_Questions" data-section="Basic_Programming_Questions">Basic Programming</a>
+        <a href="#String_Programming_Questions" data-section="String_Programming_Questions">String Programming</a>
+        <a href="#Multithreading_Programming_Questions" data-section="Multithreading_Programming_Questions">Multithreading</a>
+        <a href="#Collections_Programming_Questions" data-section="Collections_Programming_Questions">Collections</a>
+        <a href="#Java8and17_Programming_Questions" data-section="Java8and17_Programming_Questions">Java 8 & 17</a>
+        <a href="#JavaProjects" data-section="JavaProjects">Java Projects</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content-area" id="contentArea">
+      <section id="Java_Topics" class="section active">
+        <div class="section-title">Java Topics</div>
+        <div class="section-meta">SOLID, OOP, Exception Handling, Basics</div>
+        <pre>
+Java SOLID design Principles: 
+Top 10 Most Asked SOLID Design Principle Questions
+	1) What does SOLID stand for in Object-Oriented Design?
+	2) Explain the Single Responsibility Principle with an example.
+	3) What is the Open/Closed Principle and how do you achieve it?
+	4) Describe the Liskov Substitution Principle. Give a violation example.
+	5) What is the Interface Segregation Principle? Why is it needed?
+	6) Explain the Dependency Inversion Principle and its advantages.
+	7) How do SOLID principles improve maintainability and testability?
+	8) What happens if Single Responsibility Principle is violated?
+	9) How does Dependency Injection relate to the Dependency Inversion Principle?
+	10) Give a real-world example where Open/Closed Principle can be applied.
+
+Tricky Interview Questions
+	1) Can a class have multiple responsibilities and still follow SRP?
+	2) Does the Open/Closed Principle mean we should never modify a class?
+	3) Can Liskov Substitution Principle violations occur even with no compile errors? Explain.
+	4) Is Interface Segregation always beneficial? When might small interfaces be overkill?
+	5) What is the difference between Dependency Inversion and Dependency Injection?
+	6) Give an example where inheritance violates LSP but still compiles successfully.
+	7) How do SOLID principles support microservice architecture design?
+	8) What role does composition play in respecting SOLID principles?
+	9) Can you name a design pattern that strongly enforces OCP?
+	10) Which SOLID principle is broken when a class is difficult to unit test? Why?
+
+Java Opp's concept:
+Top Most Asked Java OOP Interview Questions:
+	1. What are the four main pillars of Object-Oriented Programming?
+	2. What is the difference between a Class and an Object?
+	3. What is Abstraction? Give an example.
+	4. What is Encapsulation? How is it implemented in Java?
+	5. Explain Inheritance with a real-world example.
+	6. What is Polymorphism? Explain compile-time vs runtime polymorphism.
+	7. What is Method Overloading? Give a scenario where it is useful.
+	8. What is Method Overriding? When is it used?
+	9. What is the "super" keyword in Java used for?
+	10. What is the difference between "this" and "super"?
+	11. What is an interface in Java?
+	12. What is an abstract class? How is it different from an interface?
+	13. Can we create an object of an abstract class? Why?
+	14. What is multiple inheritance? Why is it not supported in Java through classes?
+	15. What is the diamond problem in Java?
+	16. What is a constructor? How is it different from a method?
+	17. What is constructor overloading?
+	18. Can constructors be inherited? Why or why not?
+	19. What is the use of the "final" keyword?
+	20. What is the difference between "==" and ".equals()" in Java?
+	21. What is the purpose of the instanceof operator in Java, and how can it be used to determine the type of an object at runtime?
+	22. Can you explain the concept of method visibility in Java, and provide an example of how you would use access modifiers to control method visibility?
+	23. What is the difference between an instance variable and a class variable in Java, and when would you use each?
+	24. Can you explain the difference between a constructor and a method in Java, and when you would use each?
+	25. Can you explain the concept of method chaining in Java, and provide an example of how you would use it in your code?
+
+Tricky Java OOP Interview Questions:
+	1. Can we override static methods in Java?
+	2. Can we overload static methods in Java?
+	3. Can a constructor be final or static? Why?
+	4. Can an abstract class have a constructor?
+	5. Can an interface have default or static methods?
+	6. Can we instantiate an interface? If yes, how?
+	7. What happens if two interfaces have methods with the same default implementation?
+	8. What is the difference between composition and aggregation?
+	9. Is inheritance always good to use? When should we avoid it?
+	10. Why is method overriding considered runtime polymorphism?
+	11. Can private methods be overridden? Why?
+	12. What is object slicing?
+	13. Can we achieve abstraction without abstract classes or interfaces?
+	14. What is the difference between early binding and late binding?
+	15. Can a class implement multiple interfaces with the same method signature?
+	16. Can an interface extend another interface?
+	17. Why does Java not support operator overloading?
+	18. What happens if constructor throws an exception?
+	19. Why do we use getters and setters instead of making fields public?
+	20. Can a class be both abstract and final? Why?
+        </pre>
+      </section>
+
+      <section id="Array_Programming_Questions" class="section">
+        <div class="section-title">Array Programming Questions</div>
+        <div class="section-meta">Common and tricky array problems</div>
+        <pre>
+Top Most Asked Java Array Interview Questions:
+	1. What is an array in Java?
+	2. How do you declare and initialize an array in Java?
+	3. What is the default value of array elements in Java?
+	4. What is the length property of an array used for?
+	5. Can the size of an array be changed after creation?
+	6. How do you iterate through an array in Java?
+	7. What is a multi-dimensional array?
+	8. How do you declare and initialize a 2D array in Java?
+	9. What is the difference between array and ArrayList?
+	10. How are arrays stored in memory?
+	11. Can we store different data types in a single array?
+	12. What happens if you try to access an array index out of bounds?
+	13. How do you copy one array to another?
+	14. What is the use of Arrays class in Java?
+	15. How do you sort an array in Java?
+	16. How do you search an element in an array?
+	17. What is the difference between shallow copy and deep copy in arrays?
+	18. Can an array be final?
+	19. How do you reverse an array?
+	20. What is jagged array in Java?
+
+Tricky Java Array Questions:
+	1. Are arrays objects in Java?
+	2. Can we declare an array without a size?
+	3. Can we return an array from a method?
+	4. Can we pass an array to a method?
+	5. What happens if we pass a negative size to an array?
+	6. Can we create an array of zero length?
+	7. What is the difference between int[] a and int a[]?
+	8. Can we create an array with size defined at runtime?
+	9. Can arrays be generic in Java?
+	10. What happens when you print an array directly using System.out.println()?
+	11. Why is the array index starting from zero?
+	12. Can you store objects in an array?
+	13. Can you store null in an array?
+	14. Can we sort an array of objects?
+	15. What is Arrays.toString() used for?
+	16. What is Arrays.deepToString() used for?
+	17. What will happen if we assign an array of smaller type to larger type?
+	18. How does binary search work on arrays?
+	19. Can we clone an array?
+	20. What is the time complexity of array insertion and deletion?
+        </pre>
+      </section>
+
+      <section id="Basic_Programming_Questions" class="section">
+        <div class="section-title">Basic Programming Questions</div>
+        <div class="section-meta">Numeric, recursion, array basics & commonly asked problems</div>
+        <pre>
+Java Programming Interview Questions (including numeric/array-type problems):
+1. Write a program to check whether a number is even or odd.
+2. Write a program to check whether a number is prime.
+3. Write a program to find the factorial of a number.
+4. Write a program to check whether a number is a palindrome.
+5. Write a program to check whether a number is an Armstrong number.
+6. Write a program to calculate the power of a number without using Math.pow().
+7. Write a program to find the GCD (HCF) of two numbers.
+8. Write a program to find the LCM of two numbers.
+9. Write a program to print Fibonacci series up to n terms.
+10. Write a program to find the nth Fibonacci number using recursion.
+11. Write a program to reverse a given number.
+12. Write a program to count digits in a number.
+13. Write a program to sum digits of a number.
+14. Write a program to check if a number is a perfect number.
+15. Write a program to check if a number is a Harshad number.
+16. Write a program to generate a random number without using Random class.
+17. Write a program to check if a number is square or cube of an integer.
+18. Write a program to compute power using recursion.
+19. Write a program to count the number of set bits (1s) in an integer.
+20. Write a program to reverse bits of a number.
+21. Write a program to swap two numbers without using a third variable.
+22. Write a program to swap two numbers using XOR.
+23. Write a program to print numbers in reverse order without using a loop (use recursion).
+24. Write a program to compute x^y in O(log y) time (fast exponentiation).
+25. Write a program to find the trailing zeros in factorial of a number.
+26. Write a program to find the highest power of two less than or equal to a number.
+27. Write a program to check if a number is power of 2.
+28. Write a program to find the sum of the first n natural numbers using recursion.
+29. Write a program to find the sum of the first n natural numbers without recursion.
+30. Write a program to print numbers from 1 to 100 without using loops.
+31. Write a program to simulate a calculator using switch-case.
+32. Write a program to check whether a number is automorphic.
+33. Write a program to generate a random password using only ASCII ranges.
+34. Write a program to detect if two integers will overflow when added or multiplied.
+35. Write a program to find the highest and lowest set bit positions in an integer.
+36. Write a program to count trailing zeros in binary representation.
+37. Write a program to find the second largest number in an array.
+38. Write a program to find the second smallest number in an array.
+39. Write a program to find the kth largest element in an array.
+40. Write a program to find the kth smallest element in an array.
+41. Write a program to find the top k largest elements in an array (without sorting fully).
+42. Write a program to find the top k smallest elements in an array (without sorting fully).
+43. Write a program to find the third largest element in an array.
+44. Write a program to find the index of maximum and minimum elements in an array.
+45. Write a program to count how many elements are greater than the average of the array.
+46. Write a program to move all zeros to the end of an array in-place.
+47. Write a program to segregate negative and positive numbers in an array (in-place).
+48. Write a program to rotate an array left by n positions in O(1) extra space.
+49. Write a program to rotate an array right by n positions in O(1) extra space.
+50. Write a program to merge two sorted arrays into one sorted array in-place.
+51. Write a program to find duplicates in an array (without using extra collections).
+52. Write a program to remove duplicates from an array in-place.
+53. Write a program to find the missing number in an array of 1 to n.
+54. Write a program to find repeating and missing numbers in an array of 1 to n.
+55. Write a program to count inversions in an array.
+56. Write a program to find maximum difference arr[j] - arr[i] such that j > i.
+57. Write a program to find the maximum subarray sum (Kadane’s Algorithm).
+58. Write a program to find the maximum circular subarray sum.
+59. Write a program to find the number of rotations in a rotated sorted array.
+60. Write a program to search an element in a rotated sorted array.
+61. Write a program to find the smallest missing positive number in an unsorted array.
+62. Write a program to find the longest consecutive sequence in an unsorted array.
+63. Write a program to count the number of subarrays with sum equal to a given value.
+64. Write a program to find the largest subarray with sum zero.
+65. Write a program to find the longest subarray with equal number of 0s and 1s (binary array).
+66. Write a program to compute product of array elements except self (without division).
+67. Write a program to find maximum product subarray.
+68. Write a program to find minimum product subarray.
+69. Write a program to check if an array can be partitioned into two subsets with equal sum.
+70. Write a program to rearrange an array in max, min, 2nd max, 2nd min order (in-place).
+71. Write a program to find equilibrium/pivot index of an array.
+72. Write a program to count pairs with given difference in an array.
+73. Write a program to count pairs with sum divisible by a given number.
+74. Write a program to find all pairs with given sum (without using extra collections).
+75. Write a program to find frequency of each element using only the array itself (in-place).
+76. Write a program to compute prefix sum array and use it to answer range-sum queries.
+77. Write a program to find the majority element (appearing > n/2 times) in an array.
+78. Write a program to find all elements appearing more than n/3 times in an array.
+79. Write a program to find the smallest subarray to be sorted so that the whole array becomes sorted.
+80. Write a program to check if one array is a rotation of another array.
+        </pre>
+      </section>
+
+      <section id="String_Programming_Questions" class="section">
+        <div class="section-title">String Programming Questions</div>
+        <div class="section-meta">String operations, StringBuilder/StringBuffer, immutability & tasks</div>
+        <pre>
+Java String & Immutability Interview Questions:
+	1. What is a String in Java?
+	2. Why is String immutable in Java?
+	3. How does String immutability improve security?
+	4. What is the String Constant Pool (SCP)?
+	5. What is the difference between String literal and new String()?
+	6. What happens when you modify a String? Where is the new object stored?
+	7. Why is String class declared as final?
+	8. Explain how String is stored in memory.
+	9. Why should String be used for keys in HashMap?
+	10. What is interning in String? Explain the intern() method.
+	11. What happens if two strings have the same value? Do they share memory?
+	12. How to compare two Strings correctly in Java?
+	13. What is the difference between equals() and == in terms of String?
+	14. What is String concatenation? How does the compiler optimize it?
+	15. Why is String concatenation inside loops not recommended?
+
+Java StringBuffer & StringBuilder Questions:
+	16. What is StringBuffer in Java?
+	17. What is StringBuilder in Java?
+	18. What is the difference between String, StringBuffer, and StringBuilder?
+	19. Which one is thread-safe: StringBuffer or StringBuilder?
+	20. Why is StringBuffer slower than StringBuilder?
+	21. When should we use StringBuilder over StringBuffer?
+	22. How does capacity() and ensureCapacity() work in StringBuffer/StringBuilder?
+	23. What is the reverse() method used for in StringBuffer/StringBuilder?
+	24. What happens when StringBuffer exceeds its capacity internally?
+	25. Can StringBuffer/StringBuilder be made immutable?
+
+Immutability & Custom Immutable Class Questions:
+	26. How do you create a custom immutable class in Java?
+	27. Why should fields be private and final in an immutable class?
+	28. Why do we return defensive copies of mutable objects in immutable classes?
+	29. Can we have mutable fields inside an immutable class?
+	30. Why is immutability important in multi-threaded applications?
+
+Thread Safety & Performance Related String Questions:
+	31. Why is StringBuffer thread-safe?
+	32. How does StringBuffer achieve synchronization?
+	33. Why is StringBuilder not thread-safe?
+	34. When working with multiple threads, which should you use: StringBuffer or StringBuilder?
+	35. Can StringBuilder be used safely in a thread-local environment?
+	36. Explain how String immutability helps avoid synchronization issues.
+	37. Why are String operations efficient in concurrent programs?
+	38. What is the performance difference between + operator and StringBuilder.append()?
+	39. What happens when we concatenate large strings inside a loop?
+	40. How do you avoid memory waste when building long strings?
+
+Tricky & Conceptual Checks:
+	41. What will happen if we change the value of a String reference variable?
+	42. Why doesn’t StringBuffer override equals() and hashCode()?
+	43. Can two different String objects have the same hash code?
+	44. Explain memory difference between stack reference and String object stored in heap/SCP.
+	45. What is the impact of String immutability on caching and interning?
+	46. How does garbage collection treat String literals?
+	47. What is the substring memory leak problem in older Java versions?
+	48. Does StringBuilder have a thread-safety variant other than StringBuffer?
+	49. Can StringBuilder be converted into String? How?
+	50. Can String be converted into StringBuilder or StringBuffer? How?
+        </pre>
+      </section>
+
+      <section id="Multithreading_Programming_Questions" class="section">
+        <div class="section-title">Multithreading Programming Questions</div>
+        <div class="section-meta">Beginner → Advanced multithreading & concurrency topics</div>
+        <pre>
+Java Multithreading & Concurrency Interview Questions (Beginner):
+	1. What is a thread in Java?
+	2. What is the difference between process and thread?
+	3. How do you create a thread in Java?
+	4. What is the difference between extending Thread and implementing Runnable?
+	5. What is the use of the start() method?
+	6. What happens if we call run() instead of start()?
+	7. What are the different states of a thread lifecycle?
+	8. What is the difference between user thread and daemon thread?
+	9. How do you create a daemon thread in Java?
+	10. What is the purpose of Thread.sleep()?
+	11. What is thread priority? Does it guarantee execution order?
+	12. How to stop a thread safely? Why is stop() deprecated?
+	13. What is join() in multithreading? When is it used?
+	14. What is yield() in thread?
+	15. What is thread scheduler? Does Java guarantee scheduling order?
+
+Java Synchronization & Locks (Medium-Level):
+	16. What is synchronization in Java?
+	17. What is the need for synchronization?
+	18. What is a synchronized method?
+	19. What is a synchronized block?
+	20. What is the difference between synchronized method and synchronized block?
+	21. What is a monitor(lock) in Java?
+	22. What is race condition?
+	23. What is thread interference?
+	24. What is atomicity?
+	25. What is reentrant lock? How is it different from synchronized?
+	26. What is the synchronized keyword locking on for static methods?
+	27. What is the synchronized keyword locking on for instance methods?
+	28. What is the difference between object level lock and class level lock?
+	29. What is a deadlock in multithreading?
+	30. How does deadlock occur?
+	31. How can we prevent deadlock?
+	32. What is livelock?
+	33. What is starvation?
+	34. What is a blocked state in threads?
+
+Volatile & Memory Model Questions:
+	35. What is volatile keyword in Java?
+	36. How does volatile ensure visibility?
+	37. Does volatile guarantee atomicity?
+	38. What is Java Memory Model (JMM)?
+	39. What is happens-before relationship in concurrency?
+	40. Difference between synchronized and volatile?
+	41. Can volatile variables be used for thread-safe counters? Why or why not?
+
+Thread Pool & Executor Framework (Medium to Advanced):
+	42. What is Executor Framework in Java?
+	43. What is ThreadPoolExecutor?
+	44. What is Callable interface? How is it different from Runnable?
+	45. What is Future and FutureTask?
+	46. What is ScheduledExecutorService?
+	47. What is ForkJoinPool?
+	48. Difference between submit() and execute() in Executor?
+	49. What is work-stealing algorithm?
+
+Advanced Concurrency and Locking:
+	50. What is ReadWriteLock?
+	51. What is StampedLock?
+	52. What is Semaphore?
+	53. What is CountDownLatch? When is it used?
+	54. What is CyclicBarrier? When is it used?
+	55. What is Phaser in Java Concurrency?
+	56. What is AtomicInteger and how is it different from int?
+	57. What is CAS (Compare and Swap)?
+	58. What is false sharing?
+	59. What is ThreadLocal? When should we use it?
+	60. What are concurrent collections in Java?
+	61. What is ConcurrentHashMap and how is it implemented?
+	62. Difference between HashMap and ConcurrentHashMap?
+	63. What is Lock-Free programming?
+
+Serialization & Deserialization:
+	64. What is Serialization in Java?
+	65. How do you serialize an object in Java?
+	66. What is transient keyword? Why is it used?
+	67. What is serialVersionUID? Why should we define it?
+	68. What happens if serialVersionUID is not defined?
+	69. How to customize serialization using readObject() and writeObject()?
+	70. What is Externalizable interface? How is it different from Serializable?
+
+Deadlock & Prevention Focus Questions:
+	71. Write common causes of deadlock.
+	72. How to detect deadlock in Java applications?
+	73. How to fix or avoid deadlock using lock ordering?
+	74. How to avoid deadlock using timeout locks?
+	75. How to avoid deadlock using tryLock() method?
+
+Tricky Multithreading Questions:
+	76. Can a thread be started twice? What happens?
+	77. Can we synchronize on null? What happens?
+	78. Can constructors be synchronized?
+	79. What happens if an exception occurs in a synchronized block?
+	80. Can a thread lock be acquired recursively? Why?
+	81. Why are immutable objects naturally thread-safe?
+	82. Why is String immutable but StringBuffer not?
+        </pre>
+      </section>
+
+      <section id="Collections_Programming_Questions" class="section">
+        <div class="section-title">Collections Programming Questions</div>
+        <div class="section-meta">Beginner → Advanced collection topics & tricky cases</div>
+        <pre>
+Java Collections Interview Questions (Beginner):
+	1. What is the Java Collection Framework?
+	2. What is the root interface of the Collection framework?
+	3. What is the difference between Collection and Collections?
+	4. What is List in Java?
+	5. What is Set in Java?
+	6. What is Map in Java?
+	7. What is the difference between List and Set?
+	8. What is the difference between Set and Map?
+	9. What is ArrayList? When should it be used?
+	10. What is LinkedList? When should it be used?
+	11. What is Vector? Why is it considered legacy?
+	12. What is Stack class? Why is it discouraged?
+	13. What is Queue in Java?
+	14. What is Deque?
+	15. What is HashSet?
+	16. What is TreeSet?
+	17. What is LinkedHashSet?
+	18. What is HashMap?
+	19. What is LinkedHashMap?
+	20. What is TreeMap?
+
+Java Collections (Medium Level):
+	21. What is the difference between ArrayList and LinkedList?
+	22. What is the difference between HashSet and TreeSet?
+	23. What is the difference between HashSet and LinkedHashSet?
+	24. What is the difference between HashMap and Hashtable?
+	25. What is the difference between HashMap and LinkedHashMap?
+	26. What is the difference between HashMap and TreeMap?
+	27. How does HashMap work internally?
+	28. What is hashing?
+	29. What is hashCode() and equals() contract?
+	30. What happens if we override equals() but not hashCode()?
+	31. What is load factor in HashMap?
+	32. What is initial capacity in HashMap?
+	33. What is a collision in HashMap?
+	34. How HashMap handles collisions?
+	35. What is rehashing?
+	36. What is fail-fast iterator?
+	37. What is fail-safe iterator?
+	38. What is the difference between Iterator and ListIterator?
+	39. What is ConcurrentModificationException?
+	40. How to avoid ConcurrentModificationException?
+	41. What is Enumeration? How is it different from Iterator?
+	42. What is Comparator?
+	43. What is Comparable?
+	44. Difference between Comparable and Comparator?
+	45. How to sort custom objects in a list?
+
+Java Collections (Advanced Level / Concurrency & Performance):
+	46. What is ConcurrentHashMap and how is it different from HashMap?
+	47. Why Hashtable is slower than ConcurrentHashMap?
+	48. What is CopyOnWriteArrayList?
+	49. What is WeakHashMap?
+	50. What is IdentityHashMap?
+	51. What is NavigableSet?
+	52. What is NavigableMap?
+	53. What is PriorityQueue? How does it work internally?
+	54. What is BlockingQueue?
+	55. What is ArrayBlockingQueue?
+	56. What is LinkedBlockingQueue?
+	57. What is DelayQueue?
+	58. What is SynchronousQueue?
+	59. What is TreeMap's time complexity for search, insert, delete?
+	60. Time complexity differences between ArrayList, LinkedList, HashSet, and TreeSet.
+	61. Why are immutable collections useful?
+	62. Difference between deep copy and shallow copy.
+	63. Difference between synchronized and concurrent collections.
+	64. Which data structure is best for LRU cache?
+	65. Which collection should be used when insertion order must be maintained?
+
+Tricky Java Collections Questions:
+	66. Can a HashMap have null keys and null values?
+	67. Can a TreeMap have null keys?
+	68. Can a HashSet contain duplicate elements?
+	69. Can we sort a HashSet?
+	70. Why is String used as key in HashMap commonly?
+	71. What happens if key objects are mutable in HashMap?
+	72. Why should keys in HashMap be immutable?
+	73. What is the output if two keys have the same hashCode but are not equal()?
+	74. Can two different keys have the same hashCode?
+	75. What happens if hashCode method returns constant value?
+        </pre>
+      </section>
+
+      <section id="Java8and17_Programming_Questions" class="section">
+        <div class="section-title">Java 8 & 17 Programming Questions</div>
+        <div class="section-meta">Streams, lambda, records, sealed classes, pattern matching and more</div>
+        <pre>
+Java 8 Beginner-Level Questions:
+	1. What is Java 8?
+	2. What is a Lambda Expression in Java?
+	3. What is a functional interface?
+	4. Which annotation is used to define a functional interface?
+	5. What is the purpose of java.util.function package?
+	6. What are method references in Java?
+	7. What is the difference between Lambda Expression and Method Reference?
+	8. What is Stream API?
+	9. What is the difference between Collection and Stream?
+	10. What is intermediate and terminal operation in Streams?
+	11. What is Optional in Java?
+	12. Why was Optional introduced?
+	13. What is the difference between map() and flatMap() in Streams?
+	14. What is default method in interface?
+	15. What is static method inside an interface?
+	16. What is the difference between forEach() and for loop?
+	17. Can we iterate a stream more than once?
+	18. What is the difference between Stream.of() and Arrays.stream()?
+	19. What is Collectors in Stream API?
+	20. What is the difference between findFirst() and findAny()?
+
+Java 8 Medium-Level Questions:
+	21. What is predicate functional interface?
+	22. What is function functional interface?
+	23. What is supplier functional interface?
+	24. What is consumer functional interface?
+	25. What is bi-functional interface?
+	26. What is parallel stream?
+	27. When should parallel streams be avoided?
+	28. What is reduce() in streams?
+	29. What is sorted() in streams?
+	30. What is distinct() in streams?
+	31. What is filter() in streams?
+	32. How to convert a list to map using stream?
+	33. What is groupingBy() collector?
+	34. What is partitioningBy() collector?
+	35. What is peek() in streams?
+	36. What is Stream.builder() used for?
+	37. What is Optional.orElse(), Optional.orElseGet(), and Optional.orElseThrow() difference?
+	38. What is LocalDate, LocalTime, LocalDateTime API?
+	39. What is Duration and Period class?
+	40. Why were new Date and Time APIs introduced?
+
+Java 8 Advanced-Level Questions:
+	41. How does Stream lazy evaluation work?
+	42. What is short-circuiting in streams?
+	43. Why are streams not thread-safe?
+	44. What issues arise when modifying state in parallel streams?
+	45. What is the difference between concurrent and parallel stream?
+	46. What is spliterator?
+	47. What is collector characteristics?
+	48. How do you create a custom collector?
+	49. What is Tail-Call Optimization and does Java support it?
+	50. Can lambda expressions use instance variables?
+	51. What is effectively final in lambda?
+	52. How does method reference resolution work internally?
+
+Java 17 Beginner-Level Questions:
+	53. What is Java 17?
+	54. What does LTS mean in Java versions?
+	55. What are Records in Java?
+	56. What problem do Records solve?
+	57. What are Sealed Classes?
+	58. What is Pattern Matching in instanceof?
+	59. What is Text Block in Java?
+	60. What is switch expression in Java 17?
+
+Java 17 Medium-Level Questions:
+	61. What are the permitted subclasses in sealed classes?
+	62. What are the three ways a class can extend a sealed class? (sealed, non-sealed, final)
+	63. What is pattern matching inside switch?
+	64. What is difference between var and record?
+	65. What is difference between class and record?
+	66. What is hidden class?
+	67. What is strong encapsulation in Java modules?
+	68. What is difference between JDK and JRE in Java 17?
+	69. What is ZGC?
+	70. What is Shenandoah GC?
+
+Java 17 Advanced-Level Questions:
+	71. How do sealed classes improve domain modeling?
+	72. How record handles hashCode(), equals() and toString()?
+	73. What is the performance benefit of records?
+	74. What is Difference between Pattern Matching in instanceof vs switch?
+	75. What is foreign function and memory API (Preview)?
+	76. What is the difference between HTTP Client API and HttpURLConnection?
+	77. What is text block compile-time normalization?
+	78. How switch pattern matching prevents NullPointerException?
+
+Tricky Questions (Java 8 + Java 17):
+	79. Can streams be reused?
+	80. Can lambda access non-final local variables?
+	81. What happens if you modify a collection while streaming it?
+	82. What happens when Optional.get() is called on empty optional?
+	83. Can we create custom functional interface?
+	84. Can interface have private methods?
+	85. Can record fields be mutated?
+	86. Can sealed classes be extended outside module/boundaries?
+	87. Can we define constructors inside records?
+        </pre>
+      </section>
+
+      <section id="JavaProjects" class="section">
+        <div class="section-title">Java Projects</div>
+        <div class="section-meta">Project ideas & feature notes</div>
+        <pre>
+1. Employee Management System
+   - OOP, Collections, Streams, JTable, Serialization/JDBC, Search/Sort, MVC
+
+2. Student Course Registration System
+   - Map Student, ListCourse , Streams, Optional, JTable, MVC
+
+3. Inventory & Billing System
+   - LinkedHashMap (Cart), Streams (Bill calc), File I/O/JDBC, JTable, MVC
+
+4. Library Management System
+   - Collections, Streams (filter/search), Serialization, Background Thread for autosave
+
+5. Hospital Patient Record System
+   - OOP modeling, Streams, Sorting/Filtering, JTable, Optional, MVC
+
+6. Hotel Room Booking System
+   - Maps for booking records, Streams for availability check, Serialization/JDBC
+
+7. Vehicle Service Management System
+   - List/Map, Streams for filtering by status, JTable, Optional, MVC
+
+8. College Time Table Scheduler
+   - Collections + Streams for conflict checking, JTable UI, Custom Comparator
+
+9. ATM Simulation System
+   - OOP, Thread-safe balance updates, Synchronization, File I/O logs
+
+10. Task Reminder / Scheduler App
+    - ScheduledExecutorService, Queue, Swing Timer, JTable, Records (Java 17)
+
+11. Personal Expense Tracker
+    - List of transactions, Streams (sum/filter), LocalDate, JTable, Serialization
+
+12. Digital Notes Organizer
+    - PriorityQueue sorting notes, Streams for search, Serialization/File I/O
+
+13. Chat Messenger (Local Network)
+    - Sockets, Multithreading, ConcurrentHashMap (active users), Swing UI
+
+14. Laundry Service Order Management
+    - HashMap for orders, Streams to filter by status, JTable display
+
+15. Sales CRM mini system
+    - Collections, GroupingBy(), Sorting with Comparator, Optional fields
+        </pre>
+      </section>
+    </main>
+
+  </div>
+
+  <button id="backTop" title="Back to top">↑</button>
+
+<script>
+const tocLinks = document.querySelectorAll('.toc a');
+const sections = document.querySelectorAll('.section');
+const backTop = document.getElementById('backTop');
+
+tocLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    tocLinks.forEach(a => a.classList.remove('active'));
+    link.classList.add('active');
+
+    const targetId = link.dataset.section;
+    sections.forEach(sec => {
+      sec.style.display = sec.id === targetId ? 'block' : 'none';
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Show top button when scrolling down
+window.addEventListener('scroll', () => {
+  backTop.style.display = window.scrollY > 200 ? 'block' : 'none';
+});
+backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// Show only first section initially
+sections.forEach((sec, idx) => sec.style.display = idx === 0 ? 'block' : 'none');
+</script>
+
+</body>
+</html>
